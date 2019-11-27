@@ -31,9 +31,11 @@ def DPLL(CNF_Formula):
         #print("First")
         return False
     while True:
+        #print("BCP return True to DPLL")
         if not decide():
             return True
         while not BCP(CNF_Formula):
+            #print("BCP return False to DPLL")
             if not backtrack():
                 #print("Second")
                 return False
@@ -76,12 +78,14 @@ def BCP(CNF_Formula):
                         break
 
             if(falseCount == (len(clause)-1)):
+                #print("Unit Caluse")
                 if(unAssigned_variable > 0):
                     literal_list[unAssigned_variable] = True
                     trail[unAssigned_variable] = [True, True]
                 else:
                     literal_list[abs(unAssigned_variable)] = False
                     trail[abs(unAssigned_variable)] = [False, True]
+                #print(trail)
 
     #print("After Assign : ", trail)
     # Check for unsatisfied clause
@@ -103,7 +107,8 @@ def BCP(CNF_Formula):
         if falseCount == len(clause):
             #print("BCP Return False")
             return False
-    #print("BCP Return True")
+
+    #print("BCP Return True",trail)
     return True
 
 
@@ -115,7 +120,9 @@ def BCP(CNF_Formula):
 
 def decide():
     # If all variables are assigned then return false
+    #print("In Decide")
     if None not in literal_list.values():
+        #print("In Decide")
         return False
 
     # Otherwise choose the unassigned variables e.g x
@@ -133,16 +140,23 @@ def decide():
 
 def backtrack():
     while True:
+
         # If stack 'trail' is empty then return false
         if not bool(trail):
+            #print("List empty")
             return False
 
         # pop the last item from stack 'trail'
         v = trail.popitem()
+        #print("BackTrack , Value Pop : ",v)
+        literal_list[v[0]] = None
 
         # Check the flip bit : If it is False, Need to flip the value against the literal & update the flip signal to True
         if not v[1][1]:
+
             trail[v[0]] = [not(v[1][0]), True]
+            literal_list[v[0]] = not(v[1][0])
+            #print("Change value : ", trail)
             return True
 
 #clauses = parse_dimacs("C:\\Users\\MUHAMMAD USMAN\\Downloads\\benchmarks\\example-10.cnf")
