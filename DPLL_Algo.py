@@ -43,17 +43,17 @@ def DPLL(CNF_Formula):
 def BCP(CNF_Formula):
 
     # Check IF: the clause have single literal ? THEN: Assign value such that the clause becomes TRUE
-    for clause in CNF_Formula:
-        if len(clause) == 1:
-            #print("Less than 1")
-            # IF literal is positive, which means it is without negation, so we need to assign TRUE value
-            if clause[0] > 0:
-                literal_list[clause[0]] = True
-                trail[clause[0]] = [True, True]
-            # ELSE literal is negative, which means it is with negation, so we need to assign FALSE value
-            else:
-                literal_list[abs(clause[0])] = False
-                trail[abs(clause[0])] = [False, True]
+    #for clause in CNF_Formula:
+    #    if len(clause) == 1:
+    #        #print("Less than 1")
+    #        # IF literal is positive, which means it is without negation, so we need to assign TRUE value
+    #        if clause[0] > 0:
+    #            literal_list[clause[0]] = True
+    #            trail[clause[0]] = [True, True]
+    #        # ELSE literal is negative, which means it is with negation, so we need to assign FALSE value
+    #        else:
+    #            literal_list[abs(clause[0])] = False
+    #            trail[abs(clause[0])] = [False, True]
 
     # Find the unit clause implying that a variable x must be set to value v ∈ {0,1}
     # Check the clauses that have more than one literal
@@ -94,12 +94,12 @@ def BCP(CNF_Formula):
         falseCount = 0
         for literal in clause:
             if abs(literal) in trail.keys():
-                if literal > 0 and trail[abs(literal)][0]== True:
+                if (literal > 0 and trail[abs(literal)][0]== True) or (literal < 0 and trail[abs(literal)][0]== False):
                     #print("Here 1 ", literal)
                     break
-                elif literal < 0 and trail[abs(literal)][0]== False:
-                    #print("Here 2 ", literal)
-                    break
+                #elif :
+                #    #print("Here 2 ", literal)
+                #    break
                 else:
                     #print("Here 3 ", literal)
                     falseCount = falseCount + 1
@@ -110,7 +110,6 @@ def BCP(CNF_Formula):
 
     #print("BCP Return True",trail)
     return True
-
 
 
 
@@ -139,8 +138,8 @@ def decide():
             return True
 
 def backtrack():
-    while True:
 
+    while True:
         # If stack 'trail' is empty then return false
         if not bool(trail):
             #print("List empty")
@@ -153,11 +152,11 @@ def backtrack():
 
         # Check the flip bit : If it is False, Need to flip the value against the literal & update the flip signal to True
         if not v[1][1]:
-
             trail[v[0]] = [not(v[1][0]), True]
             literal_list[v[0]] = not(v[1][0])
             #print("Change value : ", trail)
             return True
+
 
 #clauses = parse_dimacs("C:\\Users\\MUHAMMAD USMAN\\Downloads\\benchmarks\\example-10.cnf")
 clauses = parse_dimacs(sys.argv[1])
