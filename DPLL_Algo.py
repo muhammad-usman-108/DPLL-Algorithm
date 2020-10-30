@@ -87,7 +87,6 @@ def BCP(CNF_Formula):
                     trail[abs(unAssigned_variable)] = [False, True]
                 #print(trail)
 
-    #print("After Assign : ", trail)
     # Check for unsatisfied clause
     for clause in CNF_Formula:
         #print(clause)
@@ -95,33 +94,20 @@ def BCP(CNF_Formula):
         for literal in clause:
             if abs(literal) in trail.keys():
                 if (literal > 0 and trail[abs(literal)][0]== True) or (literal < 0 and trail[abs(literal)][0]== False):
-                    #print("Here 1 ", literal)
                     break
-                #elif :
-                #    #print("Here 2 ", literal)
-                #    break
                 else:
-                    #print("Here 3 ", literal)
                     falseCount = falseCount + 1
 
         if falseCount == len(clause):
             #print("BCP Return False")
             return False
 
-    #print("BCP Return True",trail)
     return True
-
-
-
-
-
 
 
 def decide():
     # If all variables are assigned then return false
-    #print("In Decide")
     if None not in literal_list.values():
-        #print("In Decide")
         return False
 
     # Otherwise choose the unassigned variables e.g x
@@ -133,40 +119,35 @@ def decide():
         if literal_list[i] == None:
             literal_list[i] = False
             trail[i] = [False, False]
-            #print("In decide : ", trail)
-            #print("In decide : ", literal_list)
             return True
 
-def backtrack():
 
+def backtrack():
     while True:
         # If stack 'trail' is empty then return false
         if not bool(trail):
-            #print("List empty")
             return False
 
         # pop the last item from stack 'trail'
         v = trail.popitem()
-        #print("BackTrack , Value Pop : ",v)
+
         literal_list[v[0]] = None
 
-        # Check the flip bit : If it is False, Need to flip the value against the literal & update the flip signal to True
+        # Check the flip bit : If it is False, Need to flip the value against the literal 
+        # and update the flip signal to True
         if not v[1][1]:
             trail[v[0]] = [not(v[1][0]), True]
             literal_list[v[0]] = not(v[1][0])
-            #print("Change value : ", trail)
             return True
 
 
-#clauses = parse_dimacs("C:\\Users\\MUHAMMAD USMAN\\Downloads\\benchmarks\\example-10.cnf")
 clauses = parse_dimacs(sys.argv[1])
-#print(clauses)
+
 literal_values(clauses)
-#print("List : ", literal_list)
+
 if DPLL(clauses):
     print("sat")
     exit(10)
 else:
     print("unsat")
     exit(20)
-#print("List : ", literal_list)
