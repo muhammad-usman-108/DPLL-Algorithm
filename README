@@ -2,3 +2,5 @@
 Implement a SAT solver for propositional logic following the DPLL architecture.
 You have to implement a trail, boolean constraint propagation, decisions, backtracking as presented
 for DPLL.
+
+In logic and computer science, the Davis–Putnam–Logemann–Loveland algorithm is a complete, backtracking-based search algorithm for deciding the satisfiability of propositional logic formulae in conjunctive normal form, i.e. for solving the CNF-SAT problem.
